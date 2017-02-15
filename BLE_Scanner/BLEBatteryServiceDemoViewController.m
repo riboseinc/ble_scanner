@@ -144,7 +144,7 @@
         }
         else
         {
-            if ([self.batteryService.peripheral isConnected])
+            if (self.batteryService.peripheral.state == CBPeripheralStateConnected)
             {
                 // sign up for notifications
                 self.batteryService.peripheral.delegate = self;

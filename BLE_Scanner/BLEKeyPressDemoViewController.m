@@ -186,7 +186,7 @@
         }
         else
         {
-            if ([self.keyPressedService.peripheral isConnected])
+            if (self.keyPressedService.peripheral.state == CBPeripheralStateConnected)
             {
                 // sign up for notifications
                 self.keyPressedService.peripheral.delegate = self;

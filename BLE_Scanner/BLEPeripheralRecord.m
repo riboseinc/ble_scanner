@@ -83,14 +83,14 @@ static NSInteger recordCount=1;
         }
         
         // last option is to use the device UUID if available
-        if (self.peripheral.UUID)
+        if (self.peripheral.identifier)
         {
             NSString *uuid_string;
-            CFUUIDRef uuid = self.peripheral.UUID;
-            if (uuid)
+            NSUUID *uuid = self.peripheral.identifier;
+            
+            if (self.peripheral.identifier)
             {
-                CFStringRef s = CFUUIDCreateString(NULL, uuid);
-                uuid_string = CFBridgingRelease(s);
+                uuid_string = [uuid UUIDString];
             }
             else
             {

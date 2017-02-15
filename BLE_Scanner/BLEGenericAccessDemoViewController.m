@@ -200,10 +200,10 @@
             if ([uuidString localizedCompare:DEVICE_NAME_CHARACTERISTIC] == NSOrderedSame)
             {
                 // read the device name location
-                DLog(@"Reading Device Name  Characteristic: %@",CBUUIDDeviceNameString);
+                DLog(@"Reading Device Name  Characteristic: %@",@"2A00");
                 
                 /* Read device name */
-                if ([characteristic.UUID isEqual:[CBUUID UUIDWithString:CBUUIDDeviceNameString]])
+                if ([characteristic.UUID isEqual:[CBUUID UUIDWithString:@"2A00"]])
                 {
                     [peripheral readValueForCharacteristic:characteristic];
                 }

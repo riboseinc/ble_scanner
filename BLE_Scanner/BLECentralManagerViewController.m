@@ -143,11 +143,10 @@
     DLog(@"Peripheral Name:  %@",peripheral.name);
     
     // log the peripheral UUID
-    CFUUIDRef uuid = peripheral.UUID;
+    NSUUID *uuid = peripheral.identifier;
     if (uuid)
     {
-        CFStringRef s = CFUUIDCreateString(NULL, uuid);
-        NSString *uuid_string = CFBridgingRelease(s);
+        NSString *uuid_string = [uuid UUIDString];
         DLog(@"Peripheral UUID: %@",uuid_string);
     }
     else
@@ -217,7 +216,7 @@
 {
    
     // Implement checks before connecting, i.e. already connected
-    if (peripheral && ! [peripheral isConnected])
+    if (!peripheral.state)
     {
         NSArray *toolbarItems = self.toolbarItems;
         [[toolbarItems objectAtIndex:[toolbarItems count]-1]setEnabled:YES];
@@ -245,7 +244,7 @@
 -(void) disconnectPeripheralDevice:(CBPeripheral *)peripheral
 {
     // Ensure peripheral is connected
-    if (peripheral && [peripheral isConnected])
+    if (!peripheral.state)
     {
         DLog(@"CBCentralManager disconnecting peripheral");
         
@@ -274,14 +273,11 @@
  */
 -(void)removeDuplicatePeripherals : (CBPeripheral *) peripheral
 {
-    CFUUIDRef target = peripheral.UUID;
     BOOL (^test)(id obj, NSUInteger idx, BOOL *stop);
     test = ^(id obj, NSUInteger idx, BOOL *stop)
     {
         BLEPeripheralRecord *record = (BLEPeripheralRecord *)obj;
-        CFUUIDRef uuid = record.peripheral.UUID;
-        
-        if ( uuid && CFEqual(target, uuid))
+        if ( record.peripheral.identifier == peripheral.identifier )
         {
             return YES;
         }
@@ -320,7 +316,7 @@
     BOOL matchFound = NO;
     
     // stringify the UUID of the newly discovered device
-    CFUUIDRef newUUID = newRecord.peripheral.UUID;
+    NSUUID *newUUID = newRecord.peripheral.identifier;
    
     // If we have a UUID string to compare with then look at the list
     if (newUUID)
@@ -329,10 +325,10 @@
         // look for match in previously discovered devices
         for (BLEPeripheralRecord *record in self.discoveredPeripherals)
         {
-            CFUUIDRef uuid = record.peripheral.UUID;
+            NSUUID *uuid = record.peripheral.identifier;
             if (uuid)
             {
-                if (CFEqual(newUUID, uuid))
+                if (newUUID == uuid)
                 {
                     matchFound = YES;
                     [self.discoveredPeripherals replaceObjectAtIndex:index withObject:newRecord];

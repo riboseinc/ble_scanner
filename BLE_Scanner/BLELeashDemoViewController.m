@@ -256,7 +256,7 @@
     }
     else
     {
-        if ([self.immediateAlertService.peripheral isConnected])
+        if (self.immediateAlertService.peripheral.state == CBPeripheralStateConnected)
         {
                         
             char value = enable ? self.currentAlert : NO_ALERT_VALUE;

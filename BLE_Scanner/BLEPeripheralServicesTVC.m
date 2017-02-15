@@ -148,7 +148,7 @@ static NSSet *_demoServices;
 // Discover characteristics for Service
 -(void)discoverCharacteristicsForService: (CBService *) service
 {
-    if (service.peripheral && [service.peripheral isConnected])
+    if (service.peripheral && service.peripheral.state == CBPeripheralStateConnected)
     {
         if (service.peripheral.delegate == nil)
         {

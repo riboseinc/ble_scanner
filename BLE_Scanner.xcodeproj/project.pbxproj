@@ -396,6 +396,11 @@
 				CLASSPREFIX = BLE;
 				LastUpgradeCheck = 0450;
 				ORGANIZATIONNAME = "Chip Keyes";
+				TargetAttributes = {
+					D9207B3B16B6D35B0023FFFA = {
+						DevelopmentTeam = XX7DG778PN;
+					};
+				};
 			};
 			buildConfigurationList = D9207B3616B6D35B0023FFFA /* Build configuration list for PBXProject "BLE_Scanner" */;
 			compatibilityVersion = "Xcode 3.2";
@@ -620,10 +625,12 @@
 		D9207B7916B6D35B0023FFFA /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				DEVELOPMENT_TEAM = XX7DG778PN;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "BLE_Scanner/BLE_Scanner-Prefix.pch";
 				INFOPLIST_FILE = "BLE_Scanner/BLE_Scanner-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 6.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.2;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.ribose.BLE-Scanner";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
 			};
@@ -632,10 +639,12 @@
 		D9207B7A16B6D35B0023FFFA /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				DEVELOPMENT_TEAM = XX7DG778PN;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "BLE_Scanner/BLE_Scanner-Prefix.pch";
 				INFOPLIST_FILE = "BLE_Scanner/BLE_Scanner-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 6.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.2;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.ribose.BLE-Scanner";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
 			};

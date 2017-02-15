@@ -343,7 +343,7 @@
  */
 -(void)discoverHeartRateMeasurementServiceCharacteristics 
 {
-    if ([self.heartRateService.peripheral isConnected])
+    if (self.heartRateService.peripheral.state == CBPeripheralStateConnected)
     {
         
         self.peripheralStatusLabel.textColor = [UIColor greenColor];
@@ -394,7 +394,7 @@
         }
         else
         {
-            if ([self.heartRateService.peripheral isConnected])
+            if (self.heartRateService.peripheral.state == CBPeripheralStateConnected)
             {
                 // sign up for notifications
                 [self.heartRateService.peripheral setNotifyValue:enable forCharacteristic:self.heartRateService.characteristics[index]];

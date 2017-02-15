@@ -47,7 +47,7 @@
  */
 -(void)displayPeripheralConnectStatus : (CBPeripheral *)peripheral
 {
-    if ([peripheral isConnected])
+    if (peripheral.state == CBPeripheralStateConnected)
     {
         self.statusLabel.textColor = [UIColor greenColor];
         self.statusLabel.text = @"Connected";
@@ -72,8 +72,7 @@
 -(void)discoverServiceCharacteristics : (CBService *)service
 {
     
-    BOOL isConnected = [service.peripheral isConnected];
-    if (isConnected)
+    if (service.peripheral.state == CBPeripheralStateConnected)
     {
         self.statusLabel.textColor = [UIColor greenColor];
         self.statusLabel.text = @"Discovering service characteristics.";
@@ -125,7 +124,7 @@
         }
         else
         {
-            if ([service.peripheral isConnected])
+            if (service.peripheral.state == CBPeripheralStateConnected)
             {
                 self.statusLabel.textColor = [UIColor greenColor];
                 self.statusLabel.text = @"Reading Characteristic.";

@@ -158,7 +158,7 @@
     [deviceInfo addObject:RSSI_LABEL];
     
     // display a Services row unless the peripheral is disconnected AND services is nil
-    if ( ([deviceRecord.peripheral isConnected]) || (deviceRecord.peripheral.services) )
+    if ( (deviceRecord.peripheral.state) || (deviceRecord.peripheral.services) )
     {
         // show the Services Row
         [deviceInfo addObject:SERVICES_LABEL];
@@ -269,7 +269,7 @@
                 tableNeedsUpdating = YES;
             }
         }
-        else if ([record.peripheral isConnected])
+        else if (record.peripheral.state == CBPeripheralStateConnected)
         {
             if ( [currentTitle localizedCompare:@"Disconnect"] != NSOrderedSame)
             {
@@ -278,7 +278,7 @@
             }
 
         }
-        else if (! [record.peripheral isConnected])
+        else if (!record.peripheral.state)
         {
             if ( [currentTitle localizedCompare:@"Connect"] != NSOrderedSame)
             {
@@ -304,13 +304,13 @@
     // for each corresponding device toggle the button so that connect -> disconnect or disconnect -> connect
     
     BOOL (^test)(id obj, NSUInteger idx, BOOL *stop);
-    CFUUIDRef target = peripheral.UUID;
+    NSUUID *target = peripheral.identifier;
     test = ^(id obj, NSUInteger idx, BOOL *stop)
     {
         BLEPeripheralRecord *record = (BLEPeripheralRecord *)obj;
-        CFUUIDRef uuid = record.peripheral.UUID;
+        NSUUID *uuid = record.peripheral.identifier;
         
-        if ( uuid && CFEqual(target, uuid))
+        if ( uuid && target == uuid )
         {
             return YES;
         }
@@ -339,13 +339,13 @@
         currentTitle = [BLEConnectButtonCell getButtonTitle:record.dictionaryKey];
         
         if ( ([currentTitle localizedCompare:@"Connect"] == NSOrderedSame) &&
-            ([record.peripheral isConnected]) )
+            (record.peripheral.state == CBPeripheralStateConnected) )
         {
             [BLEConnectButtonCell setButtonTitle:(@"Disconnect") AtKey:record.dictionaryKey];
             
         }
         else  if ( ([currentTitle localizedCompare:@"Disconnect"] == NSOrderedSame) &&
-                  (![record.peripheral isConnected]) )
+                  (record.peripheral.state != CBPeripheralStateConnected) )
         {
             [BLEConnectButtonCell setButtonTitle:(@"Connect") AtKey:record.dictionaryKey];
         }
@@ -454,11 +454,10 @@
             else if ([cell.textLabel.text localizedCompare:UUID_LABEL] == NSOrderedSame)
             {
                 NSString *uuid_string;
-                CFUUIDRef uuid = record.peripheral.UUID;
+                NSUUID *uuid = record.peripheral.identifier;
                 if (uuid)
                 {
-                    CFStringRef s = CFUUIDCreateString(NULL, uuid);
-                    uuid_string = CFBridgingRelease(s);
+                    uuid_string = [uuid UUIDString];
                 }
                 else
                 {
@@ -471,7 +470,7 @@
             }
             else if ([cell.textLabel.text localizedCompare:CONNECTED_LABEL] == NSOrderedSame)
             {
-                cell.detailTextLabel.text = [record.peripheral isConnected] ? @"YES" : @"NO";
+                cell.detailTextLabel.text = (record.peripheral.state == CBPeripheralStateConnected) ? @"YES" : @"NO";
             }
             else if ([cell.textLabel.text localizedCompare:RSSI_LABEL] == NSOrderedSame)
             {
@@ -480,7 +479,7 @@
             else if ([cell.textLabel.text localizedCompare:SERVICES_LABEL] == NSOrderedSame)
             {
                 // add an accessory view disclosure indicator if the device is connected or if Services in non-nil
-                if ([record.peripheral isConnected] || record.peripheral.services)
+                if (record.peripheral.state == CBPeripheralStateConnected || record.peripheral.services)
                 {
                     cell.accessoryType = UITableViewCellAccessoryDetailDisclosureButton;
                 }
